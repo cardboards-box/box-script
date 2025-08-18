@@ -3,8 +3,9 @@
     "BoxScript.Cli": {
       "commandName": "Project",
       "commandLineArgs": "document"
-        //"execute -f Examples/FileDownload/script.js" 
-        //"execute -c Examples/Weather/config.json -f Examples/Weather/script.js"
+      //"document"
+      //"execute -f Examples/FileDownload/script.js" 
+      //"execute -c Examples/Weather/config.json -f Examples/Weather/script.js"
     }
   }
 }

@@ -10,7 +10,7 @@ using static Constants;
 /// <summary>
 /// The service responsible for executing box-scripts
 /// </summary>
-public interface IScriptEngine
+public interface IScriptEngineService
 {
     /// <summary>
     /// Creates a new instance of the script engine settings
@@ -24,6 +24,13 @@ public interface IScriptEngine
     /// <param name="settings">The settings</param>
     /// <returns>The service collection</returns>
     IServiceCollection GenerateServiceCollection(IScriptEngineSettings settings);
+
+    /// <summary>
+    /// Describes all of the enums that are registered in the script engine settings
+    /// </summary>
+    /// <param name="settings">The engine settings</param>
+    /// <returns>The enum descriptions</returns>
+    IEnumerable<EnumDescription> Enums(IScriptEngineSettings settings);
 
     /// <summary>
     /// Executes a script and returns whether it was successful or not
@@ -74,7 +81,9 @@ public interface IScriptEngine
     Task<JsValue?> Execute(string script, IScriptEngineSettings settings);
 }
 
-internal class ScriptEngine(ILogger<ScriptEngine> _logger) : IScriptEngine
+internal class ScriptEngineService(
+    ILogger<ScriptEngineService> _logger,
+    IEnumReflectionService _enums) : IScriptEngineService
 {
     /// <summary>
     /// Stores the name of the <see cref="IScriptModule"/> fetched via reflection for caching
@@ -191,7 +200,7 @@ internal class ScriptEngine(ILogger<ScriptEngine> _logger) : IScriptEngine
         });
         //Prepare the main method to be wrapped in a module
         var mainMethodName = MAIN_METHOD_PREFIX + 10.RandomString();
-        var mainModule = PrepareMainMethod(script, mainMethodName);
+        var mainModule = PrepareMainMethod(script, mainMethodName, settings);
         //Add the main module to the engine with a random name to avoid collisions
         var mainModuleName = MAIN_MODULE_PREFIX + 10.RandomString();
         engine.Modules.Add(mainModuleName, mainModule);
@@ -220,7 +229,7 @@ internal class ScriptEngine(ILogger<ScriptEngine> _logger) : IScriptEngine
             ? null : result;
     }
 
-    public string PrepareMainMethod(string script, string name)
+    public string PrepareMainMethod(string script, string name, IScriptEngineSettings settings)
     {
         var sections = ParseScriptSections(script).ToArray();
         var imports = string.Join("\n", sections.Take(sections.Length - 1));
@@ -228,7 +237,9 @@ internal class ScriptEngine(ILogger<ScriptEngine> _logger) : IScriptEngine
             .Split('\n')
             .Select(t => $"\t{t}"));
 
-        return $"{imports}\n\nexport async function {name}() {{\n{body}\n}}";
+        var enums = GenerateEnums(settings);
+
+        return $"{imports}\n{enums}\nexport async function {name}() {{\n{body}\n}}";
     }
 
     /// <summary>
@@ -291,6 +302,30 @@ internal class ScriptEngine(ILogger<ScriptEngine> _logger) : IScriptEngine
             //Move the current index to the end of the section
             current = endIndex + end.Length;
         }
+    }
+
+    public IEnumerable<EnumDescription> Enums(IScriptEngineSettings settings)
+    {
+        return settings.Enums
+            .Select(_enums.Describe);
+    }
+
+    public string GenerateEnums(IScriptEngineSettings settings)
+    {
+        var enums = Enums(settings);
+        var bob = new StringBuilder();
+        foreach (var description in enums)
+            AppendEnumClass(bob, description);
+        return bob.ToString();
+    }
+
+    public static void AppendEnumClass(StringBuilder bob, EnumDescription description)
+    {
+        bob.AppendLine($"class {description.Name} {{");
+        foreach (var value in description.Values)
+            bob.AppendLine($"\tstatic get {value.Name}() {{ return {value.Value}; }}");
+        bob.AppendLine("}");
+        bob.AppendLine();
     }
 
     public static string ResolveModuleName(IScriptModule module)

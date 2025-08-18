@@ -58,7 +58,7 @@ public class ExecuteOptions
 
 internal class ExecuteVerb(
     ILogger<ExecuteVerb> logger,
-    IScriptEngine _engine) : BooleanVerb<ExecuteOptions>(logger)
+    IScriptEngineService _engine) : BooleanVerb<ExecuteOptions>(logger)
 {
     public IScriptEngineSettings GetSettings(ExecuteOptions options, CancellationToken token)
     {

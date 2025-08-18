@@ -16,6 +16,13 @@ public interface IDocumentReflectionService
     /// <param name="type">The type to fetch the data of</param>
     /// <returns>The class information</returns>
     Class Get(Type type);
+
+    /// <summary>
+    /// Fetch the enum documentation for the given type
+    /// </summary>
+    /// <param name="type">The type to fetch the data of</param>
+    /// <returns>The enum information</returns>
+    Comments Enum(Type type);
 }
 
 internal class DocumentReflectionService(
@@ -38,18 +45,29 @@ internal class DocumentReflectionService(
         return null;
     }
 
+    public string? FilterNuGetPaths(string[] files)
+    {
+        return files
+            .Select(t => new NuGetPath(t, _nuGetLocation!))
+            .OrderByDescending(t => t.Version)
+            .ThenBy(t => t.NuGetLessPath.Length)
+            .FirstOrDefault()?
+            .Path;
+    }
+
     public string? GetPath(Assembly assembly)
     {
         var path = Path.ChangeExtension(assembly.Location, ".xml");
         if (File.Exists(path)) return path;
 
         var fileName = Path.GetFileName(path);
-
         var nuGet = GetNuGetPath();
         if (nuGet is null) return null;
 
         var files = Directory.GetFiles(nuGet, fileName, SearchOption.AllDirectories);
-        return files.OrderByDescending(t => t).FirstOrDefault();
+        if (files.Length == 0) return null;
+
+        return FilterNuGetPaths(files);
     }
 
     public DocXmlReader GetReader()
@@ -212,5 +230,46 @@ internal class DocumentReflectionService(
             properties,
             methods,
             comments);
+    }
+
+    public Comments Enum(Type type)
+    {
+        if (_commentCache.TryGetValue(type, out var item))
+            return item;
+
+        var reader = GetReader();
+        var description = reader.GetEnumComments(type);
+        var options = description.ValueComments
+            .Select(t => new TypeOption(t.Name, t.Value, t.Summary))
+            .ToArray();
+
+        return _commentCache[type] = new Comments(
+            description.Summary?.ForceNull() ?? string.Empty,
+            description.Remarks?.ForceNull(),
+            description.Example?.ForceNull(),
+            null, options);
+    }
+
+    internal record class NuGetPath(
+        string Path,
+        string NuGetBase)
+    {
+        private string? _nuGetLessPath;
+        private string[]? _segments;
+
+        public string NuGetLessPath
+        {
+            get
+            {
+                if (_nuGetLessPath is not null) return _nuGetLessPath;
+                if (Path.StartsWith(NuGetBase, StringComparison.OrdinalIgnoreCase))
+                    return _nuGetLessPath = Path[NuGetBase.Length..];
+                return _nuGetLessPath = Path;
+            }
+        }
+
+        public string[] Segments => _segments ??= NuGetLessPath.Split(['/', '\\'], StringSplitOptions.RemoveEmptyEntries);
+
+        public string? Version => Segments.Length > 1 ? Segments[1] : null;
     }
 }

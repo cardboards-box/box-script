@@ -29,8 +29,8 @@ import * as test from 'hi'; //hi
 
 console.log('This is the body of the script')";
 
-        var scriptEngine = (ScriptEngine)BuildServices()
-            .GetRequiredService<IScriptEngine>();
+        var scriptEngine = (ScriptEngineService)BuildServices()
+            .GetRequiredService<IScriptEngineService>();
 
         var sections = scriptEngine
             .ParseScriptSections(TEST_SCRIPT)
@@ -64,8 +64,8 @@ console.log('This is the body of the script');
 //How are you today?
 import { this-is-invalid } from 'hello-world';";
 
-        var scriptEngine = (ScriptEngine)BuildServices()
-            .GetRequiredService<IScriptEngine>();
+        var scriptEngine = (ScriptEngineService)BuildServices()
+            .GetRequiredService<IScriptEngineService>();
 
         var sections = scriptEngine
             .ParseScriptSections(TEST_SCRIPT)
@@ -90,10 +90,12 @@ import { this-is-invalid } from 'hello-world';";
 
 console.log('This is the body of the script');";
 
-        var scriptEngine = (ScriptEngine)BuildServices()
-            .GetRequiredService<IScriptEngine>();
+        var scriptEngine = (ScriptEngineService)BuildServices()
+            .GetRequiredService<IScriptEngineService>();
 
-        var prepMethod = scriptEngine.PrepareMainMethod(TEST_SCRIPT, "main");
+        var settings = new ScriptEngineSettings();
+
+        var prepMethod = scriptEngine.PrepareMainMethod(TEST_SCRIPT, "main", settings);
         Assert.IsNotNull(prepMethod, "Prepared method is not null");
         Assert.AreEqual("import test from 'hello';\n\n" +
             "export async function main() {\n" +
@@ -109,7 +111,7 @@ console.log('This is the body of the script');";
 helloWorld.Greeting = 'Hello World';";
         var output = new TestModule();
         var result = await BuildServices()
-            .GetRequiredService<IScriptEngine>()
+            .GetRequiredService<IScriptEngineService>()
             .Execute(TEST_SCRIPT, t => t
                 .AddCommonModules()
                 .AddModule(output));
@@ -123,7 +125,7 @@ helloWorld.Greeting = 'Hello World';";
     {
         var output = new TestModule();
         var engine = BuildServices()
-            .GetRequiredService<IScriptEngine>();
+            .GetRequiredService<IScriptEngineService>();
 
         (string, Func<int>)[] tests =
         [

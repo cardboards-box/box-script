@@ -2,3 +2,4 @@
 
 [assembly: InternalsVisibleTo("BoxScript.Modules")]
 [assembly: InternalsVisibleTo("BoxScript.Services")]
+[assembly: InternalsVisibleTo("BoxScript.Tests")]

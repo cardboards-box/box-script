@@ -4,7 +4,6 @@ using System.Net.Http.Handlers;
 namespace BoxScript.Modules.Http;
 
 using Core;
-using System;
 
 /// <summary>
 /// A module that provides HTTP functionality to box-scripts

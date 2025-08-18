@@ -52,6 +52,18 @@ public interface IScriptEngineSettings
     IEnumerable<Action<LoggerConfiguration>> Loggers { get; }
 
     /// <summary>
+    /// All of the enums that should be generated into the script
+    /// </summary>
+    IEnumerable<Type> Enums { get; }
+
+    /// <summary>
+    /// Adds an enum type to the script engine settings, allowing it to be used in scripts
+    /// </summary>
+    /// <typeparam name="T">The enum type</typeparam>
+    /// <returns>The settings engine for fluent method chaining</returns>
+    IScriptEngineSettings AddEnum<T>() where T : Enum;
+
+    /// <summary>
     /// Sets the maximum duration a single script can run for
     /// </summary>
     /// <param name="timeout">The duration the script can run for</param>
@@ -147,6 +159,7 @@ internal class ScriptEngineSettings : IScriptEngineSettings
     private readonly List<Action<IServiceCollection>> _services = [];
     private readonly List<Action<IConfigurationBuilder>> _configs = [];
     private readonly List<Action<LoggerConfiguration>> _loggers = [];
+    private readonly HashSet<Type> _enums = [];
 
     public TimeSpan ExecutionTimeout { get; set; } = TimeSpan.FromSeconds(300);
 
@@ -163,6 +176,14 @@ internal class ScriptEngineSettings : IScriptEngineSettings
     public IEnumerable<Action<IConfigurationBuilder>> Configs => _configs;
 
     public IEnumerable<Action<LoggerConfiguration>> Loggers => _loggers;
+
+    public IEnumerable<Type> Enums => _enums;
+
+    public IScriptEngineSettings AddEnum<T>() where T : Enum
+    {
+        _enums.Add(typeof(T));
+        return this;
+    }
 
     public IScriptEngineSettings AddLogger(Action<LoggerConfiguration> logger)
     {

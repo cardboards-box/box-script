@@ -1,6 +1,7 @@
 ﻿namespace BoxScript.Modules;
 
 using Core;
+using Db;
 using Http;
 using IO;
 
@@ -22,8 +23,13 @@ public static class DiExtensions
             .AddModule<JsonModule>()
             .AddModule<HttpModule>()
             .AddModule<ConfigModule>()
+
+            .AddModule<DbModule>()
+            .AddEnum<DbType>()
+
             .AddServices(c =>
                 c.AddHttpClient()
-                 .AddTransient<IJsonModule, JsonModule>());
+                 .AddTransient<IJsonModule, JsonModule>()
+                 .AddTransient<IEnumReflectionService, EnumReflectionService>());
     }
 }

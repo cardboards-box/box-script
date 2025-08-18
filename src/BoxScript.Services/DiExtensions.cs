@@ -13,6 +13,6 @@ public static class DiExtensions
     public static IServiceCollection AddScriptingServices(this IServiceCollection services)
     {
         return services
-            .AddTransient<IScriptEngine, ScriptEngine>();
+            .AddTransient<IScriptEngineService, ScriptEngineService>();
     }
 }

@@ -22,7 +22,7 @@ public class DocumentOptions
 
 internal class DocumentVerb(
     ILogger<DocumentVerb> logger,
-    IScriptEngine _engine) : BooleanVerb<DocumentOptions>(logger)
+    IScriptEngineService _engine) : BooleanVerb<DocumentOptions>(logger)
 {
     public IIndexRenderService GetRenderEngine()
     {

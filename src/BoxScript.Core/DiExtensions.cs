@@ -17,6 +17,7 @@ public static class DiExtensions
     {
         return services
             .AddTemplatingServices()
+            .AddTransient<IEnumReflectionService, EnumReflectionService>()
             .AddSerilog()
             .AddExcel();
     }

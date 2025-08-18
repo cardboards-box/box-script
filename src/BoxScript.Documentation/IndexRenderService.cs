@@ -1,7 +1,6 @@
 ﻿namespace BoxScript.Documentation;
 
 using Core;
-using Jint.Runtime;
 using Models;
 
 /// <summary>
@@ -20,7 +19,8 @@ public interface IIndexRenderService
 internal class IndexRenderService(
     IJsTypeService _types,
     IDocumentReflectionService _classes,
-    IEnumerable<IScriptModule> _modules) : IIndexRenderService
+    IEnumerable<IScriptModule> _modules,
+    IScriptEngineSettings _settings) : IIndexRenderService
 {
     private const string INDENT_CHAR = "\t";
 
@@ -103,6 +103,34 @@ internal class IndexRenderService(
         yield return $"interface {item.Name} {{";
     }
 
+    public static IEnumerable<string> Enum(string name, Comments desc)
+    {
+        if (!string.IsNullOrEmpty(desc.Summary))
+        {
+            var remarks = string.IsNullOrEmpty(desc.Remarks)
+                ? string.Empty
+                : $" - {desc.Remarks}";
+            yield return $"/** {desc.Summary}{remarks} */";
+        }
+
+        yield return $"export class {name} {{";
+
+        foreach(var value in desc.Options)
+        {
+            if (!string.IsNullOrEmpty(value.Description))
+            {
+                yield return $"\t/**";
+                yield return $"\t * {value.Description} - {value.Value}";
+                yield return $"\t * @type {{number}}";
+                yield return "\t */";
+            }
+
+            yield return $"\tstatic get {value.Name}(): number;";
+        }
+
+        yield return "}";
+    }
+
     public static string Scope(string line, int indent)
     {
         return string.Join("", Enumerable.Repeat(INDENT_CHAR, indent - 1)) + line;
@@ -125,6 +153,13 @@ internal class IndexRenderService(
                 await writer.WriteLineAsync(Scope(line, indent + 1));
 
         await writer.WriteLineAsync(Scope("}", indent));
+    }
+
+    public async Task WriteEnum(StreamWriter writer, Comments desc, string name, int indent)
+    {
+        await writer.WriteLineAsync();
+        foreach(var line in Enum(name, desc))
+            await writer.WriteLineAsync(Scope(line, indent));
     }
 
     public IEnumerable<Type> YieldTypes(Type type, HashSet<Type> found)
@@ -197,6 +232,14 @@ internal class IndexRenderService(
         int indent = 1;
         var types = new HashSet<Type>();
         var defaults = new HashSet<string>();
+
+        foreach(var type in _settings.Enums)
+        {
+            types.Add(type);
+            var comment = _classes.Enum(type);
+            await WriteEnum(writer, comment, type.Name, indent + 1);
+        }
+
         foreach(var module in _modules)
         {
             var modType = module.GetType();
