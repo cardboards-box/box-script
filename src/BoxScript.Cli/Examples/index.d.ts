@@ -5,43 +5,43 @@ declare module "modules" {
 	interface logger {
 		/**
 		 * Logs an informational message with the given arguments
-		 * @param {string} message - The log message
-		 * @param {any[]} args - The log arguments
+		 * @param {string} message The log message
+		 * @param {any[]} args The log arguments
 		 * @returns {void}
 		 */
 		Trace(message: string, ...args: any[]): void;
 		/**
 		 * Logs a debug message with the given arguments
-		 * @param {string} message - The log message
-		 * @param {any[]} args - The log arguments
+		 * @param {string} message The log message
+		 * @param {any[]} args The log arguments
 		 * @returns {void}
 		 */
 		Debug(message: string, ...args: any[]): void;
 		/**
 		 * Logs an informational message with the given arguments
-		 * @param {string} message - The log message
-		 * @param {any[]} args - The log arguments
+		 * @param {string} message The log message
+		 * @param {any[]} args The log arguments
 		 * @returns {void}
 		 */
 		Info(message: string, ...args: any[]): void;
 		/**
 		 * Logs a warning message with the given arguments
-		 * @param {string} message - The log message
-		 * @param {any[]} args - The log arguments
+		 * @param {string} message The log message
+		 * @param {any[]} args The log arguments
 		 * @returns {void}
 		 */
 		Warning(message: string, ...args: any[]): void;
 		/**
 		 * Logs an error message with the given arguments
-		 * @param {string} message - The log message
-		 * @param {any[]} args - The log arguments
+		 * @param {string} message The log message
+		 * @param {any[]} args The log arguments
 		 * @returns {void}
 		 */
 		Error(message: string, ...args: any[]): void;
 		/**
 		 * Logs a critical error message with the given arguments
-		 * @param {string} message - The log message
-		 * @param {any[]} args - The log arguments
+		 * @param {string} message The log message
+		 * @param {any[]} args The log arguments
 		 * @returns {void}
 		 */
 		Critical(message: string, ...args: any[]): void;
@@ -51,22 +51,22 @@ declare module "modules" {
 	interface StreamReaderProxy {
 		/**
 		 * Reads a line from the stream reader
-		 * @returns {string}
+		 * @returns {string} The read line
 		 */
 		ReadLine(): string;
 		/**
 		 * Reads a line from the stream reader asynchronously
-		 * @returns {Promise<string>}
+		 * @returns {Promise<string>} The read line
 		 */
 		ReadLineAsync(): Promise<string>;
 		/**
 		 * Reads all remaining content from the stream reader
-		 * @returns {string}
+		 * @returns {string} The read content
 		 */
 		ReadToEnd(): string;
 		/**
 		 * Reads all remaining content from the stream reader asynchronously
-		 * @returns {Promise<string>}
+		 * @returns {Promise<string>} The read content
 		 */
 		ReadToEndAsync(): Promise<string>;
 		/**
@@ -85,25 +85,25 @@ declare module "modules" {
 	interface StreamWriterProxy {
 		/**
 		 * Writes the given value to the stream writer
-		 * @param {string} value - The value to write
+		 * @param {string} value The value to write
 		 * @returns {void}
 		 */
 		Write(value: string): void;
 		/**
 		 * Writes the given value to the stream writer asynchronously
-		 * @param {string} value - The value to write
+		 * @param {string} value The value to write
 		 * @returns {Promise<void>}
 		 */
 		WriteAsync(value: string): Promise<void>;
 		/**
 		 * Writes a line with the given value to the stream writer
-		 * @param {string} value - The value to write
+		 * @param {string} value The value to write
 		 * @returns {void}
 		 */
 		WriteLine(value: string): void;
 		/**
 		 * Writes a line with the given value to the stream writer asynchronously
-		 * @param {string} value - The value to write
+		 * @param {string} value The value to write
 		 * @returns {Promise<void>}
 		 */
 		WriteLineAsync(value: string): Promise<void>;
@@ -133,85 +133,85 @@ declare module "modules" {
 	interface file {
 		/**
 		 * Copies the given file to the destination
-		 * @param {string} source - The source file
-		 * @param {string} destination - The destination path
-		 * @param {boolean} [overwrite] - Whether or not to overwrite the file
+		 * @param {string} source The source file
+		 * @param {string} destination The destination path
+		 * @param {boolean} [overwrite] Whether or not to overwrite the file
 		 * @returns {void}
 		 */
 		Copy(source: string, destination: string, overwrite?: boolean): void;
 		/**
 		 * Moves the given file to the destination
-		 * @param {string} source - The source file to move
-		 * @param {string} destination - The destination path
-		 * @param {boolean} [overwrite] - Whether or not to overwrite the file
+		 * @param {string} source The source file to move
+		 * @param {string} destination The destination path
+		 * @param {boolean} [overwrite] Whether or not to overwrite the file
 		 * @returns {void}
 		 */
 		Move(source: string, destination: string, overwrite?: boolean): void;
 		/**
 		 * Checks if the given file exists
-		 * @param {string} path - The file path
-		 * @returns {boolean}
+		 * @param {string} path The file path
+		 * @returns {boolean} Whether or not the file exists
 		 */
 		Exists(path: string): boolean;
 		/**
 		 * Deletes the given file
-		 * @param {string} path - The file path
+		 * @param {string} path The file path
 		 * @returns {void}
 		 */
 		Delete(path: string): void;
 		/**
 		 * Appends the given text to the end of the file
-		 * @param {string} path - The file path
-		 * @param {string} content - The content
+		 * @param {string} path The file path
+		 * @param {string} content The content
 		 * @returns {void}
 		 */
 		Append(path: string, content: string): void;
 		/**
 		 * Writes the given content to the file, overwriting any existing content
-		 * @param {string} path - The file path
-		 * @param {string} content - The content
+		 * @param {string} path The file path
+		 * @param {string} content The content
 		 * @returns {void}
 		 */
 		Write(path: string, content: string): void;
 		/**
 		 * Gets the creation time of the given file
-		 * @param {string} path - The file path
-		 * @returns {Date}
+		 * @param {string} path The file path
+		 * @returns {Date} The creation time of the given file
 		 */
 		CreateTime(path: string): Date;
 		/**
 		 * Gets the last time the file was accessed
-		 * @param {string} path - The file path
-		 * @returns {Date}
+		 * @param {string} path The file path
+		 * @returns {Date} The last time the file was accessed
 		 */
 		AccessTime(path: string): Date;
 		/**
 		 * Gets the last time the file was written to
-		 * @param {string} path - The file path
-		 * @returns {Date}
+		 * @param {string} path The file path
+		 * @returns {Date} The last time the file was written to
 		 */
 		WriteTime(path: string): Date;
 		/**
 		 * Opens a file for reading as a text stream
-		 * @param {string} path - The file path
-		 * @returns {StreamReaderProxy}
+		 * @param {string} path The file path
+		 * @returns {StreamReaderProxy} The file stream
 		 */
 		OpenRead(path: string): StreamReaderProxy;
 		/**
 		 * Opens a file for writing as a text stream
-		 * @param {string} path - The file path
-		 * @returns {StreamWriterProxy}
+		 * @param {string} path The file path
+		 * @returns {StreamWriterProxy} The file stream
 		 */
 		OpenWrite(path: string): StreamWriterProxy;
 		/**
 		 * Creates a new file at the specified path
-		 * @param {string} path - The file path
-		 * @returns {StreamWriterProxy}
+		 * @param {string} path The file path
+		 * @returns {StreamWriterProxy} The file stream
 		 */
 		Create(path: string): StreamWriterProxy;
 		/**
 		 * Ensures a file is created at the given path
-		 * @param {string} path - The file path
+		 * @param {string} path The file path
 		 * @returns {void}
 		 */
 		Touch(path: string): void;
@@ -221,14 +221,14 @@ declare module "modules" {
 	interface json {
 		/**
 		 * Serializes the given value to a JSON string.
-		 * @param {any} value - The value
-		 * @returns {string}
+		 * @param {any} value The value
+		 * @returns {string} The JSON string
 		 */
 		Serialize(value: any): string;
 		/**
 		 * Deserializes the given JSON string to a JsValue object.
-		 * @param {string} value - The value
-		 * @returns {any}
+		 * @param {string} value The value
+		 * @returns {any} The deserialized value
 		 */
 		Deserialize(value: string): any;
 	}
@@ -269,79 +269,79 @@ declare module "modules" {
 		LogUpload: boolean;
 		/**
 		 * Sets the method of the HTTP request
-		 * @param {string} method - The HTTP method
-		 * @returns {HttpSettings}
+		 * @param {string} method The HTTP method
+		 * @returns {HttpSettings} The settings for fluent method chaining
 		 */
 		SetMethod(method: string): HttpSettings;
 		/**
 		 * Sets the URL of the HTTP request
-		 * @param {string} url - The URL
-		 * @returns {HttpSettings}
+		 * @param {string} url The URL
+		 * @returns {HttpSettings} The settings for fluent method chaining
 		 */
 		SetUrl(url: string): HttpSettings;
 		/**
 		 * Sets the base URL for the HTTP request
-		 * @param {string} url - The URL
-		 * @returns {HttpSettings}
+		 * @param {string} url The URL
+		 * @returns {HttpSettings} The settings for fluent method chaining
 		 */
 		SetBaseUrl(url: string): HttpSettings;
 		/**
 		 * Adds a query parameter to the HTTP request
-		 * @param {string} key - The key of the query parameter
-		 * @param {string} value - The value of the query parameter
-		 * @returns {HttpSettings}
+		 * @param {string} key The key of the query parameter
+		 * @param {string} value The value of the query parameter
+		 * @returns {HttpSettings} The settings for fluent method chaining
 		 */
 		AddParam(key: string, value: string): HttpSettings;
 		/**
 		 * Adds a header to the HTTP request
-		 * @param {string} key - The key of the header
-		 * @param {string} value - The value of the header
-		 * @returns {HttpSettings}
+		 * @param {string} key The key of the header
+		 * @param {string} value The value of the header
+		 * @returns {HttpSettings} The settings for fluent method chaining
 		 */
 		SetHeader(key: string, value: string): HttpSettings;
 		/**
 		 * Sets the body to a JSON object
-		 * @param {any} body - The body to set
-		 * @returns {HttpSettings}
+		 * @param {any} body The body to set
+		 * @returns {HttpSettings} The settings for fluent method chaining
 		 */
 		JsonBody(body: any): HttpSettings;
 		/**
 		 * Sets the body content to a file
-		 * @param {string} path - The path of the file
-		 * @param {string} [mpcName] - The name of the multi-part form content header for the file
-		 * @returns {HttpSettings}
+		 * @param {string} path The path of the file
+		 * @param {string} [mpcName] The name of the multi-part form content header for the file
+		 * @returns {HttpSettings} The settings for fluent method chaining
 		 */
 		FileBody(path: string, mpcName?: string): HttpSettings;
 		/**
 		 * Sets the timeout in seconds for the HTTP request
-		 * @param {number} seconds - The number of seconds
-		 * @returns {HttpSettings}
+		 * @param {number} seconds The number of seconds
+		 * @returns {HttpSettings} The settings for fluent method chaining
 		 */
 		SetTimeoutSeconds(seconds: number): HttpSettings;
 		/**
 		 * Clears the expected HTTP response codes
-		 * @returns {HttpSettings}
+		 * @returns {HttpSettings} The settings for fluent method chaining
 		 */
 		ClearExpectedCodes(): HttpSettings;
 		/**
 		 * Adds an expected HTTP response code or range of codes - <paramref name="max" /> is exclusive
-		 * @param {number} min - The min code to expect
-		 * @param {number} [max] - The optional max code to expect
-		 * @returns {HttpSettings}
+		 * @param {number} min The min code to expect
+		 * @param {number} [max] The optional max code to expect
+		 * @returns {HttpSettings} The settings for fluent method chaining
 		 */
 		ExpectCode(min: number, max?: number): HttpSettings;
 		/**
 		 * Sets whether or not to log the download progress during the HTTP request
-		 * @param {boolean} log - Whether or not to log the download progress
-		 * @param {number} [seconds] - How often to log the progress (in seconds)
-		 * @returns {HttpSettings}
+		 * @param {boolean} log Whether or not to log the download progress
+		 * @param {number} [seconds] How often to log the progress (in seconds)
+		 * @returns {HttpSettings} The settings for fluent method chaining
 		 */
 		LogDownloads(log: boolean, seconds?: number): HttpSettings;
 		/**
 		 * Sets whether or not to log the upload progress during the HTTP request
-		 * @param {boolean} log - Whether or not to log the upload progress
-		 * @param {number} [seconds] - How often to log the progress (in seconds)
-		 * @returns {HttpSettings}
+		 * @param {boolean} log Whether or not to log the upload progress
+		 * @param {number} [seconds] How often to log the progress (in seconds)
+		 * @returns {HttpSettings} The settings for fluent method chaining
 		 */
 		LogUploads(log: boolean, seconds?: number): HttpSettings;
 	}
@@ -387,17 +387,17 @@ declare module "modules" {
 		ThrowIfBad(): Promise<void>;
 		/**
 		 * Returns the response body as a JSON value
-		 * @returns {Promise<any>}
+		 * @returns {Promise<any>} The response body as a JSON value
 		 */
 		AsJson(): Promise<any>;
 		/**
 		 * Returns the response body as a string
-		 * @returns {Promise<string>}
+		 * @returns {Promise<string>} The response body as a string
 		 */
 		AsString(): Promise<string>;
 		/**
 		 * Writes the response body to a file
-		 * @param {string} path - The file path
+		 * @param {string} path The file path
 		 * @returns {Promise<void>}
 		 */
 		ToFile(path: string): Promise<void>;
@@ -412,79 +412,79 @@ declare module "modules" {
 	interface http {
 		/**
 		 * Creates an instance of the HTTP settings module
-		 * @returns {HttpSettings}
+		 * @returns {HttpSettings} The settings that were created
 		 */
 		Settings(): HttpSettings;
 		/**
 		 * Sends an HTTP request with the given settings and returns the response message
-		 * @param {HttpSettings} settings - The settings for the request
-		 * @returns {Promise<HttpResp>}
+		 * @param {HttpSettings} settings The settings for the request
+		 * @returns {Promise<HttpResp>} The response
 		 */
 		Send(settings: HttpSettings): Promise<HttpResp>;
 		/**
 		 * Sends an HTTP request and returns the JSON response
-		 * @param {HttpSettings} settings - The settings for the request
-		 * @returns {Promise<any>}
+		 * @param {HttpSettings} settings The settings for the request
+		 * @returns {Promise<any>} The response
 		 */
 		SendJson(settings: HttpSettings): Promise<any>;
 		/**
 		 * Sends a GET request to the given URL
-		 * @param {string} url - The URL of the request
-		 * @param {HttpSettings} [settings] - The optional settings for the request
-		 * @returns {Promise<HttpResp>}
+		 * @param {string} url The URL of the request
+		 * @param {HttpSettings} [settings] The optional settings for the request
+		 * @returns {Promise<HttpResp>} The response
 		 */
 		Get(url: string, settings?: HttpSettings): Promise<HttpResp>;
 		/**
 		 * Sends a GET request to the given URL and returns the JSON response
-		 * @param {string} url - The URL of the request
-		 * @param {HttpSettings} [settings] - The optional settings for the request
-		 * @returns {Promise<any>}
+		 * @param {string} url The URL of the request
+		 * @param {HttpSettings} [settings] The optional settings for the request
+		 * @returns {Promise<any>} The response
 		 */
 		GetJson(url: string, settings?: HttpSettings): Promise<any>;
 		/**
 		 * Sends a GET request to the given URL
-		 * @param {string} url - The URL of the request
-		 * @param {HttpSettings} [settings] - The optional settings for the request
-		 * @returns {Promise<HttpResp>}
+		 * @param {string} url The URL of the request
+		 * @param {HttpSettings} [settings] The optional settings for the request
+		 * @returns {Promise<HttpResp>} The response
 		 */
 		Delete(url: string, settings?: HttpSettings): Promise<HttpResp>;
 		/**
 		 * Sends a DELETE request to the given URL and returns the JSON response
-		 * @param {string} url - The URL of the request
-		 * @param {HttpSettings} [settings] - The optional settings for the request
-		 * @returns {Promise<any>}
+		 * @param {string} url The URL of the request
+		 * @param {HttpSettings} [settings] The optional settings for the request
+		 * @returns {Promise<any>} The response
 		 */
 		DeleteJson(url: string, settings?: HttpSettings): Promise<any>;
 		/**
 		 * Sends a POST request to the given URL
-		 * @param {string} url - The URL of the request
-		 * @param {any} body - The body data of the request
-		 * @param {HttpSettings} [settings] - The optional settings for the request
-		 * @returns {Promise<HttpResp>}
+		 * @param {string} url The URL of the request
+		 * @param {any} body The body data of the request
+		 * @param {HttpSettings} [settings] The optional settings for the request
+		 * @returns {Promise<HttpResp>} The response
 		 */
 		Post(url: string, body: any, settings?: HttpSettings): Promise<HttpResp>;
 		/**
 		 * Sends a POST request to the given URL and returns the JSON response
-		 * @param {string} url - The URL of the request
-		 * @param {any} body - The body data of the request
-		 * @param {HttpSettings} [settings] - The optional settings for the request
-		 * @returns {Promise<any>}
+		 * @param {string} url The URL of the request
+		 * @param {any} body The body data of the request
+		 * @param {HttpSettings} [settings] The optional settings for the request
+		 * @returns {Promise<any>} The response
 		 */
 		PostJson(url: string, body: any, settings?: HttpSettings): Promise<any>;
 		/**
 		 * Sends a PUT request to the given URL
-		 * @param {string} url - The URL of the request
-		 * @param {any} body - The body data of the request
-		 * @param {HttpSettings} [settings] - The optional settings for the request
-		 * @returns {Promise<HttpResp>}
+		 * @param {string} url The URL of the request
+		 * @param {any} body The body data of the request
+		 * @param {HttpSettings} [settings] The optional settings for the request
+		 * @returns {Promise<HttpResp>} The response
 		 */
 		Put(url: string, body: any, settings?: HttpSettings): Promise<HttpResp>;
 		/**
-		 * Sends a PUT request to the given URL
-		 * @param {string} url - The URL of the request
-		 * @param {any} body - The body data of the request
-		 * @param {HttpSettings} [settings] - The optional settings for the request
-		 * @returns {Promise<any>}
+		 * Sends a PUT request to the given URL and returns the JSON response
+		 * @param {string} url The URL of the request
+		 * @param {any} body The body data of the request
+		 * @param {HttpSettings} [settings] The optional settings for the request
+		 * @returns {Promise<any>} The response
 		 */
 		PutJson(url: string, body: any, settings?: HttpSettings): Promise<any>;
 	}
@@ -493,8 +493,8 @@ declare module "modules" {
 	interface config {
 		/**
 		 * Gets the value of the given configuration key
-		 * @param {string} key - The configuration key
-		 * @returns {string}
+		 * @param {string} key The configuration key
+		 * @returns {string} The configuration value
 		 */
 		Get(key: string): string;
 	}

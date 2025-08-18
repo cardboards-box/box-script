@@ -164,7 +164,7 @@ public class HttpModule(
     }
 
     /// <summary>
-    /// Sends a PUT request to the given URL
+    /// Sends a PUT request to the given URL and returns the JSON response
     /// </summary>
     /// <param name="url">The URL of the request</param>
     /// <param name="body">The body data of the request</param>

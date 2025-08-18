@@ -79,10 +79,13 @@ internal class IndexRenderService(
             var name = par.Name;
             if (par.Nullable)
                 name = $"[{name}]";
-            yield return $" * @param {{{paramType}}} {name} - {par.Comments.Summary}";
+            yield return $" * @param {{{paramType}}} {name} {par.Comments.Summary}";
         }
 
-        yield return $" * @returns {{{type}}}";
+        var returns = string.IsNullOrEmpty(method.Comments.Returns)
+            ? string.Empty
+            : $" {method.Comments.Returns}";
+        yield return $" * @returns {{{type}}}{returns}";
         yield return $" */";
         yield return Declaration(type);
     }

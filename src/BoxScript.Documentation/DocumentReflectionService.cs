@@ -66,19 +66,19 @@ internal class DocumentReflectionService(
         //Handle some special types that we don't want to reflection scan
         _typeCache.Add(typeof(string), new Class(
             "string", typeof(string), [], [],
-            new Comments("Represents a sequence of characters.", null, null, [])));
+            new Comments("Represents a sequence of characters.", null, null, null, [])));
         _typeCache.Add(typeof(void), new Class(
             "void", typeof(void), [], [],
-            new Comments("Represents the absence of a value.", null, null, [])));
+            new Comments("Represents the absence of a value.", null, null, null, [])));
         _typeCache.Add(typeof(object), new Class(
             "object", typeof(object), [], [],
-            new Comments("The base class for all types in C#. All types derive from this class.", null, null, [])));
+            new Comments("The base class for all types in C#. All types derive from this class.", null, null, null, [])));
         _typeCache.Add(typeof(DateTime), new Class(
             "DateTime", typeof(DateTime), [], [],
-            new Comments("Represents an instant in time, typically expressed as a date and time of day.", null, null, [])));
+            new Comments("Represents an instant in time, typically expressed as a date and time of day.", null, null, null, [])));
         _typeCache.Add(typeof(TimeSpan), new Class(
             "TimeSpan", typeof(TimeSpan), [], [],
-            new Comments("Represents a time interval.", null, null, [])));
+            new Comments("Represents a time interval.", null, null, null, [])));
 
         //Fill the comment cache for the default types
         foreach (var (type, item) in _typeCache)
@@ -100,7 +100,7 @@ internal class DocumentReflectionService(
             description.Summary?.ForceNull() ?? string.Empty,
             description.Remarks?.ForceNull(),
             description.Example?.ForceNull(),
-            options);
+            null, options);
     }
 
     public Comments GetPropertyComments(PropertyInfo property)
@@ -111,7 +111,7 @@ internal class DocumentReflectionService(
             description.Summary?.ForceNull() ?? string.Empty,
             description.Remarks?.ForceNull(),
             description.Example?.ForceNull(),
-            []);
+            null, []);
     }
 
     public Comments GetMethodComments(MethodInfo method, out Comments[] paramComments)
@@ -125,11 +125,11 @@ internal class DocumentReflectionService(
                 var comments = description.Parameters
                     .Where(p => p.Name == t.Name);
                 if (!comments.Any())
-                    return new Comments("", null, null, []);
+                    return new Comments("", null, null, null, []);
                 var (_, text) = comments.First();
                 return new Comments(
                     text?.ForceNull() ?? string.Empty,
-                    null, null, []);
+                    null, null, null, []);
             })
             .ToArray();
 
@@ -137,6 +137,7 @@ internal class DocumentReflectionService(
             description.Summary?.ForceNull() ?? string.Empty,
             description.Remarks?.ForceNull(),
             description.Example?.ForceNull(),
+            description.Returns?.ForceNull(),
             []);
     }
 
