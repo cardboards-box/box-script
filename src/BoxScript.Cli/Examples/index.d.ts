@@ -1,6 +1,35 @@
 ﻿// This file is auto-generated from the loaded modules
 // You should avoid modifying this file directly
-// Generated: 2025-08-18 16:45 UTC
+// Generated: 2025-08-18 17:22 UTC
+
+/** Specifies values that indicate whether a compression operation emphasizes speed or compression size. */
+declare class CompressionLevel {
+	/**
+	 * The compression operation should optimally balance compression speed and output size. - 0
+	 * @type {number}
+	 */
+	static get Optimal(): number;
+	/**
+	 * The compression operation should complete as quickly as possible, even if the resulting file is not optimally compressed. - 1
+	 * @type {number}
+	 */
+	static get Fastest(): number;
+	/**
+	 * No compression should be performed on the file. - 2
+	 * @type {number}
+	 */
+	static get NoCompression(): number;
+	/**
+	 * The compression operation should create output as small as possible, even if the operation takes a longer time to complete. - 3
+	 * @type {number}
+	 */
+	static get SmallestSize(): number;
+}
+
+declare class SearchOption {
+	static get TopDirectoryOnly(): number;
+	static get AllDirectories(): number;
+}
 
 /** Specifies the data type of a field, a property, or a <see langword="Parameter" /> object of a .NET data provider. */
 declare class DbType {
@@ -400,6 +429,195 @@ declare module "modules" {
 		 * @returns {void}
 		 */
 		Touch(path: string): void;
+		/**
+		 * Extracts a zip file to the specified folder
+		 * @param {string} path The zip file to extract
+		 * @param {string} folder The folder to extract to
+		 * @param {boolean} [overwrite] Whether or not to overwrite files
+		 * @returns {void}
+		 */
+		Unzip(path: string, folder: string, overwrite?: boolean): void;
+		/**
+		 * Compresses a directory into a zip file
+		 * @param {string} path The folder to compress
+		 * @param {string} destination The destination zip file
+		 * @param {boolean} [includeBaseDir] Whether or not to include the base directory in the file
+		 * @param {CompressionLevel} [level] The compression level
+		 * @returns {void}
+		 */
+		Zip(path: string, destination: string, includeBaseDir?: boolean, level?: CompressionLevel): void;
+	}
+
+	/** A module that provides directory functionality to box-scripts */
+	interface dir {
+		/**
+		 * Creates the given directory
+		 * @param {string} path The directory to create
+		 * @returns {void}
+		 */
+		Create(path: string): void;
+		/**
+		 * Whether or not the given directory exists
+		 * @param {string} path The directory to check
+		 * @returns {boolean} Whether or not the directory exists
+		 */
+		Exists(path: string): boolean;
+		/**
+		 * Deletes the given directory
+		 * @param {string} path The directory to delete
+		 * @param {boolean} [recursive] Whether or not to delete sub-directories
+		 * @returns {void}
+		 */
+		Delete(path: string, recursive?: boolean): void;
+		/**
+		 * Gets the current directory
+		 * @returns {string} The current directory
+		 */
+		Current(): string;
+		/**
+		 * Moves the given directory to the destination
+		 * @param {string} source The source path
+		 * @param {string} destination The destination path
+		 * @returns {void}
+		 */
+		Move(source: string, destination: string): void;
+		/**
+		 * Gets the directories in the given path
+		 * @param {string} path The path to get the files
+		 * @param {string} [searchPattern] The optional search pattern
+		 * @param {SearchOption} [options] The search options
+		 * @returns {string[]} The file paths
+		 */
+		Files(path: string, searchPattern?: string, options?: SearchOption): string[];
+		/**
+		 * Gets the root directory or volume for the given path
+		 * @param {string} path The directory path
+		 * @returns {string} The root directory or volume
+		 */
+		Root(path: string): string;
+		/**
+		 * Gets the parent directory of the given path, or null if there is no parent
+		 * @param {string} path The directory path
+		 * @returns {string} The parent directory
+		 */
+		Parent(path: string): string;
+	}
+
+	/** A module that provides path related functionalities to box-scripts */
+	interface path {
+		/** The character used to separate path segments */
+		readonly DirChar?: string;
+		/** The alternate character used to separate path segments */
+		readonly AltDirChar?: string;
+		/** The character used to separate paths in environment variables */
+		readonly Separator?: string;
+		/** The character used to separate the volume from the path */
+		readonly VolumeSeparator?: string;
+		/**
+		 * Changes the extension of the given path
+		 * @param {string} path The path to change
+		 * @param {string} extension The extension to use
+		 * @returns {string} The changed path
+		 */
+		ChangeExtension(path: string, extension: string): string;
+		/**
+		 * Combines the given paths into a single path
+		 * @param {string[]} paths The path segments
+		 * @returns {string} The combined path
+		 */
+		Combine(...paths: string[]): string;
+		/**
+		 * Checks if the given path exists
+		 * @param {string} path The path to check
+		 * @returns {boolean} Whether or not the path exists
+		 */
+		Exists(path: string): boolean;
+		/**
+		 * Whether or not the given path ends in the directory separator
+		 * @param {string} path The path to check
+		 * @returns {boolean} Whether or not the given path ends in the directory separator
+		 */
+		EndsInDirSeparator(path: string): boolean;
+		/**
+		 * Gets the directory name for the given path
+		 * @param {string} path The path to check
+		 * @returns {string} The directory path
+		 */
+		Directory(path: string): string;
+		/**
+		 * Gets the file name for the given path
+		 * @param {string} path The path
+		 * @returns {string} The file name
+		 */
+		FileName(path: string): string;
+		/**
+		 * Gets the file name without the extension for the given path
+		 * @param {string} path The path
+		 * @returns {string} The file name without the extension
+		 */
+		FileNameWithoutExtension(path: string): string;
+		/**
+		 * Gets the extension for the given path
+		 * @param {string} path The path
+		 * @returns {string} The extension without the leading dot
+		 */
+		Extension(path: string): string;
+		/**
+		 * Gets the fully qualified absolute path for the given path
+		 * @param {string} path The path
+		 * @returns {string} The fully qualified path
+		 */
+		Full(path: string): string;
+		/**
+		 * Gets the invalid path characters
+		 * @returns {string[]} The invalid path characters
+		 */
+		InvalidPathChars(): string[];
+		/**
+		 * Gets the invalid file name characters
+		 * @returns {string[]} The invalid file name characters
+		 */
+		InvalidFileChars(): string[];
+		/**
+		 * Gets the path root for the given path
+		 * @param {string} path The path
+		 * @returns {string} The root path
+		 */
+		Root(path: string): string;
+		/**
+		 * Gets a random file name
+		 * @returns {string} The random file name
+		 */
+		Random(): string;
+		/**
+		 * Gets the path relative to the given base path
+		 * @param {string} relativeTo The base path
+		 * @param {string} path The path to check
+		 * @returns {string} The path relative to the given path
+		 */
+		Relative(relativeTo: string, path: string): string;
+		/**
+		 * Creates a temporary file and returns the path
+		 * @returns {string} The temporary file path
+		 */
+		TempFile(): string;
+		/**
+		 * Gets the temporary directory
+		 * @returns {string} The temporary directory
+		 */
+		Temp(): string;
+		/**
+		 * Checks if the given path is fully qualified
+		 * @param {string} path The path
+		 * @returns {boolean} Whether or not the given path is fully qualified
+		 */
+		IsQualified(path: string): boolean;
+		/**
+		 * Checks if the given path is rooted
+		 * @param {string} path The path
+		 * @returns {boolean} Whether or not the path is rooted
+		 */
+		IsRooted(path: string): boolean;
 	}
 
 	/** A module that provides JSON functionality to box-scripts */
@@ -1013,6 +1231,8 @@ declare module "modules" {
 
 	export var logger: logger;
 	export var file: file;
+	export var dir: dir;
+	export var path: path;
 	export var json: json;
 	export var http: http;
 	export var config: config;

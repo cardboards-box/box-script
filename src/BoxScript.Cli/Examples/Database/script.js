@@ -1,7 +1,7 @@
 ﻿import { config, logger, db, file } from 'modules';
 
 //Get the database connection string from the config
-const connectionString = config.Get('Database:ConnectionString');
+const connectionString = config.Get('Database:ConnectionString') || 'Data Source=database.db;';
 
 //Delete the database if it already exists
 if (file.Exists('database.db'))

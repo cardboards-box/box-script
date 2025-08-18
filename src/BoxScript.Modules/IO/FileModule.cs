@@ -1,6 +1,7 @@
 ﻿namespace BoxScript.Modules.IO;
 
 using Core;
+using System.IO.Compression;
 
 /// <summary>
 /// A module that provides file system related functionalities to box-scripts
@@ -114,5 +115,30 @@ public class FileModule : IScriptModule
     {
         if (File.Exists(path)) return;
         File.WriteAllText(path, string.Empty);
+    }
+
+    /// <summary>
+    /// Extracts a zip file to the specified folder
+    /// </summary>
+    /// <param name="path">The zip file to extract</param>
+    /// <param name="folder">The folder to extract to</param>
+    /// <param name="overwrite">Whether or not to overwrite files</param>
+    [ModuleExport]
+    public void Unzip(string path, string folder, bool overwrite = true)
+    {
+        ZipFile.ExtractToDirectory(path, folder, overwrite);
+    }
+
+    /// <summary>
+    /// Compresses a directory into a zip file
+    /// </summary>
+    /// <param name="path">The folder to compress</param>
+    /// <param name="destination">The destination zip file</param>
+    /// <param name="includeBaseDir">Whether or not to include the base directory in the file</param>
+    /// <param name="level">The compression level</param>
+    [ModuleExport]
+    public void Zip(string path, string destination, bool includeBaseDir = true, CompressionLevel level = CompressionLevel.Optimal)
+    {
+        ZipFile.CreateFromDirectory(path, destination, level, includeBaseDir);
     }
 }

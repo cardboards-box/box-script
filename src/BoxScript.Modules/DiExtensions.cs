@@ -19,7 +19,13 @@ public static class DiExtensions
     {
         return services
             .AddModule<LogModule>()
+
             .AddModule<FileModule>()
+            .AddModule<DirectoryModule>()
+            .AddModule<PathModule>()
+            .AddEnum<System.IO.Compression.CompressionLevel>()
+            .AddEnum<SearchOption>()
+
             .AddModule<JsonModule>()
             .AddModule<HttpModule>()
             .AddModule<ConfigModule>()
