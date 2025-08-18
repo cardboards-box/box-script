@@ -1,0 +1,22 @@
+﻿<Project Sdk="Microsoft.NET.Sdk">
+
+	<PropertyGroup>
+		<TargetFramework>net8.0</TargetFramework>
+		<ImplicitUsings>enable</ImplicitUsings>
+		<Nullable>enable</Nullable>
+		<GenerateDocumentationFile>true</GenerateDocumentationFile>
+	</PropertyGroup>
+
+	<ItemGroup>
+		<PackageReference Include="CardboardBox.Extensions.Excel" Version="2.0.1" />
+		<PackageReference Include="CardboardBox.Extensions.Scripting" Version="2.0.1" />
+		<PackageReference Include="CardboardBox.Setup" Version="2.0.0" />
+		<PackageReference Include="Flurl" Version="4.0.0" />
+		<PackageReference Include="SixLabors.ImageSharp" Version="2.1.11" />
+	</ItemGroup>
+
+	<ItemGroup>
+		<Compile Include="./../global.cs" />
+	</ItemGroup>
+
+</Project>

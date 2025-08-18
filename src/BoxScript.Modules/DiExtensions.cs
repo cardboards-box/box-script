@@ -1,0 +1,29 @@
+﻿namespace BoxScript.Modules;
+
+using Core;
+using Http;
+using IO;
+
+/// <summary>
+/// The extension methods used for adding dependency injection (DI) support to the BoxScript framework.
+/// </summary>
+public static class DiExtensions
+{
+    /// <summary>
+    /// Adds a collection of common <see cref="IScriptModule"/>s
+    /// </summary>
+    /// <param name="services">The service collection to add to</param>
+    /// <returns>The service collection for fluent method chaining</returns>
+    public static IScriptEngineSettings AddCommonModules(this IScriptEngineSettings services)
+    {
+        return services
+            .AddModule<LogModule>()
+            .AddModule<FileModule>()
+            .AddModule<JsonModule>()
+            .AddModule<HttpModule>()
+            .AddModule<ConfigModule>()
+            .AddServices(c =>
+                c.AddHttpClient()
+                 .AddTransient<IJsonModule, JsonModule>());
+    }
+}
