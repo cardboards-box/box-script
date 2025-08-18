@@ -109,6 +109,9 @@ internal class JsTypeService(
     {
         FillCache();
 
+        if (Nullable.GetUnderlyingType(type) is Type underlying)
+            return TypeName(underlying);
+
         if (_jsNames.TryGetValue(type, out var name))
             return name;
 

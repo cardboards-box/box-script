@@ -26,6 +26,8 @@ public static class DiExtensions
 
             .AddModule<DbModule>()
             .AddEnum<DbType>()
+            .AddEnum<ParameterDirection>()
+            .AddEnum<CommandType>()
 
             .AddServices(c =>
                 c.AddHttpClient()

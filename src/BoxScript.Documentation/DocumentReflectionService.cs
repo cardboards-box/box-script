@@ -47,6 +47,10 @@ internal class DocumentReflectionService(
 
     public string? FilterNuGetPaths(string[] files)
     {
+        //Since NuGet paths start with the version, and append a lang folder
+        //with the english version being in the root folder
+        //We want to get the latest version, and then get the shortest path
+        //otherwise we could get a random language - and everyone speaks English, obviously (/s)
         return files
             .Select(t => new NuGetPath(t, _nuGetLocation!))
             .OrderByDescending(t => t.Version)

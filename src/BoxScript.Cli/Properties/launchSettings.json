@@ -2,10 +2,7 @@
   "profiles": {
     "BoxScript.Cli": {
       "commandName": "Project",
-      "commandLineArgs": "document"
-      //"document"
-      //"execute -f Examples/FileDownload/script.js" 
-      //"execute -c Examples/Weather/config.json -f Examples/Weather/script.js"
+      "commandLineArgs": "execute -f Examples/Database/script.js -c Examples/Database/config.json"
     }
   }
 }
