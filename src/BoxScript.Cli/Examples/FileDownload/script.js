@@ -8,7 +8,8 @@ const fileName = (() => {
     return parts[parts.length - 1];
 })();
 //Log the download progress every 5 seconds
-const settings = http.Settings().LogDownloads(true, 5);
+const settings = http.Settings()
+    .LogDownloads(true, 5);
 //Trigger the download
 const response = await http.Get(file, settings);
 //Throw an error if the download failed

@@ -1,6 +1,7 @@
 ﻿namespace BoxScript.Documentation;
 
 using Core;
+using Jint.Runtime;
 using Models;
 
 /// <summary>
@@ -164,7 +165,26 @@ internal class IndexRenderService(
         }
         //Found unrestricted type
         found.Add(type);
+        foreach(var explode in ExplodeClass(type, found))
+            yield return explode;
+
         yield return type;
+    }
+
+    public IEnumerable<Type> ExplodeClass(Type type, HashSet<Type> found)
+    {
+        var item = _classes.Get(type);
+        var props = item.Properties
+                .Select(t => t.Type)
+                .Distinct()
+                .SelectMany(t => YieldTypes(t, found));
+        var methods = item.Methods
+            .SelectMany(t => t.Parameters
+                .Select(t => t.Type)
+                .Append(t.ReturnType)
+                .Distinct()
+                .SelectMany(t => YieldTypes(t, found)));
+        return methods.Concat(props);
     }
 
     public async Task WriteIndex(StreamWriter writer, string moduleName)
@@ -180,17 +200,7 @@ internal class IndexRenderService(
             var item = _classes.Get(modType);
             defaults.Add(item.Name);
 
-            var props = item.Properties
-                .Select(t => t.Type)
-                .Distinct()
-                .SelectMany(t => YieldTypes(t, types));
-            var methods = item.Methods
-                .SelectMany(t => t.Parameters
-                    .Select(t => t.Type)
-                    .Append(t.ReturnType)
-                    .Distinct()
-                    .SelectMany(t => YieldTypes(t, types)));
-            var allTypes = props.Concat(methods).ToArray();
+            var allTypes = ExplodeClass(modType, types);
             foreach (var type in allTypes)
                 await WriteInterface(writer, type, indent + 1);
 

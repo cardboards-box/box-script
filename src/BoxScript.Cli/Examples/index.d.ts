@@ -233,6 +233,22 @@ declare module "modules" {
 		Deserialize(value: string): any;
 	}
 
+	/** Represents a query parameter for an HTTP request */
+	interface QueryParam {
+		/** The key of the request */
+		Key?: string;
+		/** The value of the request */
+		Value?: string;
+	}
+
+	/** Represents a range of HTTP status codes */
+	interface CodeRange {
+		/** The minimum value */
+		Min: number;
+		/** The exclusive maximum value */
+		Max: number;
+	}
+
 	/** The settings for the HTTP module */
 	interface HttpSettings {
 		/** The method of the settings */
@@ -328,6 +344,28 @@ declare module "modules" {
 		 * @returns {HttpSettings}
 		 */
 		LogUploads(log: boolean, seconds?: number): HttpSettings;
+	}
+
+	/** A class that holds the progress of an HTTP request. */
+	interface HttpProgress {
+		/** The amount of bytes uploaded */
+		readonly UploadedMb: number;
+		/** The percentage of the upload that has been completed */
+		readonly UploadPercentage: number;
+		/** The time it took to upload the data */
+		readonly UploadTimeSeconds: number;
+		/** Whether or not the upload has finished */
+		readonly UploadFinished: boolean;
+		/** The amount of bytes downloaded */
+		readonly DownloadedMb: number;
+		/** The percentage of the download that has been completed */
+		readonly DownloadPercentage: number;
+		/** The time it took to download the data */
+		readonly DownloadTimeSeconds: number;
+		/** Whether or not the download has finished */
+		readonly DownloadFinished: boolean;
+		/** The settings for the request */
+		readonly Settings?: HttpSettings;
 	}
 
 	/** A wrapper for the results of an HTTP request */
