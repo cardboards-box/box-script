@@ -1,5 +1,4 @@
-﻿using Jint;
-using Serilog;
+﻿using Serilog;
 
 namespace BoxScript.Cli.Verbs;
 
@@ -36,6 +35,12 @@ public class ExecuteOptions
     /// </summary>
     [Option('l', "log-file", HelpText = "The log file to write the execution logs to")]
     public string? LogFile { get; set; }
+
+    /// <summary>
+    /// Sets the working directory for relative path resolution
+    /// </summary>
+    [Option('w', "working-directory", HelpText = "Sets the working directory for relative path resolution")]
+    public string? WorkingDirectory { get; set; }
 
     /// <summary>
     /// The timeout in seconds for the script execution
@@ -93,6 +98,20 @@ internal class ExecuteVerb(
             .AddCommonModules();
     }
 
+    public void UpdateWorkingDirectory(ExecuteOptions options, bool hasFile)
+    {
+        var dir = options.WorkingDirectory?.ForceNull();
+        if (string.IsNullOrEmpty(dir) && hasFile)
+            dir = options.File!;
+
+        var directory = Path.GetDirectoryName(dir);
+        if (string.IsNullOrEmpty(directory)) return;
+
+        var full = Path.GetFullPath(directory);
+        Directory.SetCurrentDirectory(full);
+        _logger.LogInformation("Set working directory to: {dir}", full);
+    }
+
     public override async Task<bool> Execute(ExecuteOptions options, CancellationToken token)
     {
         var hasInline = !string.IsNullOrWhiteSpace(options.Script);
@@ -119,6 +138,7 @@ internal class ExecuteVerb(
             ? options.Script!
             : await File.ReadAllTextAsync(options.File!, token);
         var settings = GetSettings(options, token);
+        UpdateWorkingDirectory(options, hasFile);
         _logger.LogInformation("Starting to execute script >> {script}", script.SafeSubString(400));
         var result = await _engine.Execute(script, settings);
         if (result is null || result.IsUndefined() || result.IsNull())

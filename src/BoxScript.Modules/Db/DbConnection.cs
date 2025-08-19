@@ -1,6 +1,5 @@
 ﻿using Dapper;
 using Jint.Native;
-using System.Dynamic;
 
 namespace BoxScript.Modules.Db;
 
@@ -59,6 +58,25 @@ public class DbConnection(IDbConnection _connection) : IDisposable
             settings?.Transaction?.Transaction,
             settings?.CommandTimeoutSec,
             settings?.Type)).ToArray();
+    }
+
+    /// <summary>
+    /// Executes a query and returns an iterator that can be used to read the results one by one
+    /// </summary>
+    /// <param name="query">The query to execute</param>
+    /// <param name="settings">The settings for the query</param>
+    /// <returns>The record iterator that reads from the database</returns>
+    [ModuleExport(type: typeof(Task<IteratorProxy>))]
+    public virtual async Task<ScriptProxy> QueryUnbuffered(string query, DbQuerySettings? settings = null)
+    {
+        var cmd = new CommandDefinition(query, 
+            settings?.Parameters,
+            settings?.Transaction?.Transaction,
+            settings?.CommandTimeoutSec,
+            settings?.Type,
+            CommandFlags.None);
+        var results = await _connection.QueryAsync(cmd);
+        return new(new IteratorProxy(results.GetEnumerator()));
     }
 
     /// <summary>

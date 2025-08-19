@@ -1,6 +1,6 @@
 ﻿// This file is auto-generated from the loaded modules
 // You should avoid modifying this file directly
-// Generated: 2025-08-18 17:22 UTC
+// Generated: 2025-08-19 05:41 UTC
 
 /** Specifies values that indicate whether a compression operation emphasizes speed or compression size. */
 declare class CompressionLevel {
@@ -261,40 +261,6 @@ declare module "modules" {
 		Critical(message: string, ...args: any[]): void;
 	}
 
-	/** A proxy for StreamReader */
-	interface StreamReaderProxy {
-		/**
-		 * Reads a line from the stream reader
-		 * @returns {string} The read line
-		 */
-		ReadLine(): string;
-		/**
-		 * Reads a line from the stream reader asynchronously
-		 * @returns {Promise<string>} The read line
-		 */
-		ReadLineAsync(): Promise<string>;
-		/**
-		 * Reads all remaining content from the stream reader
-		 * @returns {string} The read content
-		 */
-		ReadToEnd(): string;
-		/**
-		 * Reads all remaining content from the stream reader asynchronously
-		 * @returns {Promise<string>} The read content
-		 */
-		ReadToEndAsync(): Promise<string>;
-		/**
-		 * Closes the stream reader, releasing any resources associated with it
-		 * @returns {void}
-		 */
-		Close(): void;
-		/**
-		 * Disposes of the stream reader, releasing any resources associated with it
-		 * @returns {void}
-		 */
-		Dispose(): void;
-	}
-
 	/** A proxy for StreamWriter */
 	interface StreamWriterProxy {
 		/**
@@ -341,6 +307,52 @@ declare module "modules" {
 		 * @returns {void}
 		 */
 		Dispose(): void;
+	}
+
+	/** A proxy for StreamReader */
+	interface StreamReaderProxy {
+		/**
+		 * Reads a line from the stream reader
+		 * @returns {string} The read line
+		 */
+		ReadLine(): string;
+		/**
+		 * Reads a line from the stream reader asynchronously
+		 * @returns {Promise<string>} The read line
+		 */
+		ReadLineAsync(): Promise<string>;
+		/**
+		 * Reads all remaining content from the stream reader
+		 * @returns {string} The read content
+		 */
+		ReadToEnd(): string;
+		/**
+		 * Reads all remaining content from the stream reader asynchronously
+		 * @returns {Promise<string>} The read content
+		 */
+		ReadToEndAsync(): Promise<string>;
+		/**
+		 * Closes the stream reader, releasing any resources associated with it
+		 * @returns {void}
+		 */
+		Close(): void;
+		/**
+		 * Disposes of the stream reader, releasing any resources associated with it
+		 * @returns {void}
+		 */
+		Dispose(): void;
+		/**
+		 * Save the current stream to a file
+		 * @param {string} path The file to save to
+		 * @returns {Promise<void>}
+		 */
+		SaveToFile(path: string): Promise<void>;
+		/**
+		 * Copy the content of the stream to another stream
+		 * @param {StreamWriterProxy} stream The stream to write to
+		 * @returns {Promise<void>}
+		 */
+		CopyTo(stream: StreamWriterProxy): Promise<void>;
 	}
 
 	/** A module that provides file system related functionalities to box-scripts */
@@ -423,6 +435,12 @@ declare module "modules" {
 		 * @returns {StreamWriterProxy} The file stream
 		 */
 		Create(path: string): StreamWriterProxy;
+		/**
+		 * Creates a stream reader from the given text
+		 * @param {string} content The text content of the stream
+		 * @returns {StreamReaderProxy} The stream reader
+		 */
+		StreamFromString(content: string): StreamReaderProxy;
 		/**
 		 * Ensures a file is created at the given path
 		 * @param {string} path The file path
@@ -620,6 +638,167 @@ declare module "modules" {
 		IsRooted(path: string): boolean;
 	}
 
+	/** Provides a proxy for iterating through collections in box-scripts */
+	interface IteratorProxy {
+		/** The current item in the enumerator */
+		readonly Current?: any;
+		/**
+		 * Moves to the next item in the iterator
+		 * @returns {boolean} true if the enumerator moved to the next item
+		 */
+		MoveNext(): boolean;
+		/**
+		 * Gets the next item in the iterator or null if the end is reached
+		 * @returns {any} The next item in the iterator or null if there is no next item
+		 */
+		Next(): any;
+		/**
+		 * Resets the enumerator to the initial position
+		 * @returns {void}
+		 */
+		Reset(): void;
+		/**
+		 * Disposes of the underlying iterator.
+		 * @returns {void}
+		 */
+		Dispose(): void;
+	}
+
+	/** Provides a proxy for iterating through collections in box-scripts */
+	interface IteratorProxyAsync {
+		/** The current item in the enumerator */
+		readonly Current?: any;
+		/**
+		 * Moves to the next item in the iterator
+		 * @returns {Promise<boolean>} true if the enumerator moved to the next item
+		 */
+		MoveNext(): Promise<boolean>;
+		/**
+		 * Gets the next item in the iterator or null if the end is reached
+		 * @returns {Promise<any>} The next item in the iterator or null if there is no next item
+		 */
+		Next(): Promise<any>;
+		/**
+		 * Disposes of the underlying iterator.
+		 * @returns {Promise<void>}
+		 */
+		Dispose(): Promise<void>;
+	}
+
+	/** Represents a CSV reader that can read and parse CSV files */
+	interface CsvReaderProxy {
+		/** Reads the current record from the CSV file */
+		readonly Current?: any;
+		/**
+		 * Reads all of the records in the CSV file 
+		 * @returns {IteratorProxy} The unbuffered collection of records
+		 */
+		RecordsUnbuffered(): IteratorProxy;
+		/**
+		 * Reads all of the records in the CSV file asynchronously
+		 * @returns {IteratorProxyAsync} The unbuffered collection of records
+		 */
+		RecordsUnbufferedAsync(): IteratorProxyAsync;
+		/**
+		 * Reads all of the records in the CSV file and returns them as an array - This will load all records into memory - avoid for large files
+		 * @returns {any[]} All of the records from the file
+		 */
+		Records(): any[];
+		/**
+		 * Reads all of the records in the CSV file asynchronously and returns them as an array - All of the records from the fileThis will load all records into memory - avoid for large files
+		 * @returns {Promise<any[]>}
+		 */
+		RecordsAsync(): Promise<any[]>;
+		/**
+		 * Reads the next record from the CSV file
+		 * @returns {boolean} Whether or not the record was read
+		 */
+		Read(): boolean;
+		/**
+		 * Reads the next record from the CSV file
+		 * @returns {Promise<boolean>} Whether or not the record was read
+		 */
+		ReadAsync(): Promise<boolean>;
+		/**
+		 * Reads the header of the CSV file
+		 * @returns {boolean} Whether or not the headers were read
+		 */
+		ReadHeader(): boolean;
+		/**
+		 * Reads the header of the CSV file
+		 * @returns {Promise<boolean>} Whether or not the headers were read
+		 */
+		ReadHeaderAsync(): Promise<boolean>;
+		/**
+		 * Reads the next record from the file
+		 * @returns {any} The next record or null if there are none
+		 */
+		ReadNext(): any;
+		/**
+		 * Reads the next record from the file
+		 * @returns {Promise<any>} The next record or null if there are none
+		 */
+		ReadNextAsync(): Promise<any>;
+		/**
+		 * Reads the row as an array of strings
+		 * @returns {string[]} The array of strings or null if there are no records
+		 */
+		ReadRow(): string[];
+		/**
+		 * Reads the row as an array of strings
+		 * @returns {Promise<string[]>} The array of strings or null if there are no records
+		 */
+		ReadRowAsync(): Promise<string[]>;
+		/**
+		 * Disposes of the underlying CSV reader and stream reader.
+		 * @returns {void}
+		 */
+		Dispose(): void;
+	}
+
+	/** Represents a CSV writer */
+	interface CsvWriterProxy {
+		/**
+		 * Writes all of the given records to the CSV file
+		 * @param {any[]} value The values to write
+		 * @returns {void}
+		 */
+		WriteRecords(value: any[]): void;
+		/**
+		 * Disposes of the underlying CSV writer and stream writer.
+		 * @returns {void}
+		 */
+		Dispose(): void;
+	}
+
+	/** A module that provides CSV functionality to box-scripts */
+	interface csv {
+		/**
+		 * Reads the given CSV file - Make sure to read the headers!
+		 * @param {string} path The file path
+		 * @returns {CsvReaderProxy} The CSV reader instance
+		 */
+		Read(path: string): CsvReaderProxy;
+		/**
+		 * Reads the given file stream - Make sure to read the headers!
+		 * @param {StreamReaderProxy} reader The stream reader
+		 * @returns {CsvReaderProxy} The CSV reader instance
+		 */
+		ReadStream(reader: StreamReaderProxy): CsvReaderProxy;
+		/**
+		 * Writes the given CSV file - Make sure to write the headers
+		 * @param {string} path The path to write to
+		 * @returns {CsvWriterProxy} The CSV writer instance
+		 */
+		Write(path: string): CsvWriterProxy;
+		/**
+		 * Writes the given file stream - Make sure to write the headers!
+		 * @param {StreamWriterProxy} writer The stream writer
+		 * @returns {CsvReaderProxy} The CSV writer instance
+		 */
+		WriteStream(writer: StreamWriterProxy): CsvReaderProxy;
+	}
+
 	/** A module that provides JSON functionality to box-scripts */
 	interface json {
 		/**
@@ -799,6 +978,11 @@ declare module "modules" {
 		 */
 		AsString(): Promise<string>;
 		/**
+		 * Returns the response body as a stream
+		 * @returns {Promise<StreamReaderProxy>}
+		 */
+		AsStream(): Promise<StreamReaderProxy>;
+		/**
 		 * Writes the response body to a file
 		 * @param {string} path The file path
 		 * @returns {Promise<void>}
@@ -968,7 +1152,12 @@ declare module "modules" {
 		 * Reads the next result set from the query
 		 * @returns {Promise<any[]>} The records from the reader
 		 */
-		Next(): Promise<any[]>;
+		Read(): Promise<any[]>;
+		/**
+		 * Reads the next result set from the query and returns an iterator proxy
+		 * @returns {IteratorProxyAsync} The record iterator
+		 */
+		ReadUnbuffered(): IteratorProxyAsync;
 		/**
 		 * Reads the next result set from the query and returns the first record or null
 		 * @returns {Promise<any>} The record or null
@@ -1012,6 +1201,13 @@ declare module "modules" {
 		 * @returns {Promise<any[]>} The records read from the database
 		 */
 		Query(query: string, settings?: DbQuerySettings): Promise<any[]>;
+		/**
+		 * Executes a query and returns an iterator that can be used to read the results one by one
+		 * @param {string} query The query to execute
+		 * @param {DbQuerySettings} [settings] The settings for the query
+		 * @returns {Promise<IteratorProxy>} The record iterator that reads from the database
+		 */
+		QueryUnbuffered(query: string, settings?: DbQuerySettings): Promise<IteratorProxy>;
 		/**
 		 * Execute a query that returns the first result or null
 		 * @param {string} query The query to execute
@@ -1233,6 +1429,7 @@ declare module "modules" {
 	export var file: file;
 	export var dir: dir;
 	export var path: path;
+	export var csv: csv;
 	export var json: json;
 	export var http: http;
 	export var config: config;

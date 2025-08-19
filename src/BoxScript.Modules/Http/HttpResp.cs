@@ -1,8 +1,7 @@
-﻿using Jint.Native;
-
-namespace BoxScript.Modules.Http;
+﻿namespace BoxScript.Modules.Http;
 
 using Core;
+using IO;
 
 /// <summary>
 /// A wrapper for the results of an HTTP request
@@ -86,6 +85,17 @@ public class HttpResp(
         if (_response.Content is null)
             return string.Empty;
         return await _response.Content.ReadAsStringAsync();
+    }
+
+    /// <summary>
+    /// Returns the response body as a stream
+    /// </summary>
+    /// <returns></returns>
+    [ModuleExport(type: typeof(Task<StreamReaderProxy>))]
+    public async Task<ScriptProxy> AsStream()
+    {
+        var content = await _response.Content.ReadAsStreamAsync();
+        return new(new StreamReaderProxy(content));
     }
 
     /// <summary>

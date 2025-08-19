@@ -6,6 +6,9 @@ global using CommandLine;
 
 global using Flurl;
 
+global using Jint;
+global using Jint.Native;
+
 global using Microsoft.Extensions.Configuration;
 global using Microsoft.Extensions.DependencyInjection;
 global using Microsoft.Extensions.Logging;
@@ -13,6 +16,7 @@ global using Microsoft.Extensions.Logging;
 global using System.Collections;
 global using System.Collections.Concurrent;
 global using System.Data;
+global using System.Globalization;
 global using System.Net;
 global using System.Numerics;
 global using System.Reflection;

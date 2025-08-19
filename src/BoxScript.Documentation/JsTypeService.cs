@@ -1,5 +1,4 @@
 ﻿using BoxScript.Core;
-using Jint.Native;
 using System.Diagnostics.CodeAnalysis;
 
 namespace BoxScript.Documentation;

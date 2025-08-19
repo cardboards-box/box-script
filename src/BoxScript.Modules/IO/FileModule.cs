@@ -107,6 +107,20 @@ public class FileModule : IScriptModule
     public ScriptProxy Create(string path) => new(new StreamWriterProxy(File.CreateText(path)));
 
     /// <summary>
+    /// Creates a stream reader from the given text
+    /// </summary>
+    /// <param name="content">The text content of the stream</param>
+    /// <returns>The stream reader</returns>
+    [ModuleExport(type: typeof(StreamReaderProxy))]
+    public ScriptProxy StreamFromString(string content)
+    {
+        var bytes = Encoding.UTF8.GetBytes(content);
+        var ms = new MemoryStream(bytes);
+        var sr = new StreamReaderProxy(ms);
+        return new(sr);
+    }
+
+    /// <summary>
     /// Ensures a file is created at the given path
     /// </summary>
     /// <param name="path">The file path</param>

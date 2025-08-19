@@ -4,6 +4,7 @@ using Core;
 using Db;
 using Http;
 using IO;
+using IO.Csv;
 
 /// <summary>
 /// The extension methods used for adding dependency injection (DI) support to the BoxScript framework.
@@ -23,6 +24,7 @@ public static class DiExtensions
             .AddModule<FileModule>()
             .AddModule<DirectoryModule>()
             .AddModule<PathModule>()
+            .AddModule<CsvModule>()
             .AddEnum<System.IO.Compression.CompressionLevel>()
             .AddEnum<SearchOption>()
 

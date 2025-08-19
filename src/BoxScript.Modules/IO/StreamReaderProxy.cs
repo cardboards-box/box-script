@@ -9,6 +9,17 @@ public class StreamReaderProxy(
     StreamReader _reader)
 {
     /// <summary>
+    /// Provides access to the underlying StreamReader instance
+    /// </summary>
+    internal StreamReader Reader => _reader;
+
+    /// <summary>
+    /// A proxy for StreamReader
+    /// </summary>
+    /// <param name="stream">The stream to read</param>
+    public StreamReaderProxy(Stream stream) : this(new StreamReader(stream)) { }
+
+    /// <summary>
     /// Reads a line from the stream reader
     /// </summary>
     /// <returns>The read line</returns>
@@ -47,4 +58,27 @@ public class StreamReaderProxy(
     /// </summary>
     [ModuleExport]
     public void Dispose() => _reader.Dispose();
+
+    /// <summary>
+    /// Save the current stream to a file
+    /// </summary>
+    /// <param name="path">The file to save to</param>
+    [ModuleExport]
+    public async Task SaveToFile(string path)
+    {
+        using var io = File.Create(path);
+        await Reader.BaseStream.CopyToAsync(io);
+        await io.FlushAsync();
+    }
+
+    /// <summary>
+    /// Copy the content of the stream to another stream
+    /// </summary>
+    /// <param name="stream">The stream to write to</param>
+    [ModuleExport]
+    public async Task CopyTo(StreamWriterProxy stream)
+    {
+        await Reader.BaseStream.CopyToAsync(stream.Writer.BaseStream);
+        await stream.FlushAsync();
+    }
 }

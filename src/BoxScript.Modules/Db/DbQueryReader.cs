@@ -16,9 +16,20 @@ public class DbQueryReader(
     /// </summary>
     /// <returns>The records from the reader</returns>
     [ModuleExport(type: typeof(Task<JsValue[]>))]
-    public async Task<dynamic[]> Next()
+    public async Task<dynamic[]> Read()
     {
         return (await _reader.ReadAsync()).ToArray();
+    }
+
+    /// <summary>
+    /// Reads the next result set from the query and returns an iterator proxy
+    /// </summary>
+    /// <returns>The record iterator</returns>
+    [ModuleExport(type: typeof(IteratorProxyAsync))]
+    public ScriptProxy ReadUnbuffered()
+    {
+        var records = _reader.ReadUnbufferedAsync();
+        return new(new IteratorProxyAsync(records.GetAsyncEnumerator()));
     }
 
     /// <summary>

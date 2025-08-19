@@ -9,6 +9,11 @@ public class StreamWriterProxy(
     StreamWriter _writer)
 {
     /// <summary>
+    /// Provides access to the underlying StreamWriter instance
+    /// </summary>
+    internal StreamWriter Writer => _writer;
+
+    /// <summary>
     /// Writes the given value to the stream writer
     /// </summary>
     /// <param name="value">The value to write</param>
