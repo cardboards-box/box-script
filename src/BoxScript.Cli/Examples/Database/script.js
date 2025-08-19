@@ -9,7 +9,7 @@ if (file.Exists('database.db'))
 
 const con = await db.SQLite()
     .WithConnection(connectionString)
-    .Connect();
+	.Connect();
 
 await con.Execute(`CREATE TABLE IF NOT EXISTS users (
 	id INTEGER PRIMARY KEY,

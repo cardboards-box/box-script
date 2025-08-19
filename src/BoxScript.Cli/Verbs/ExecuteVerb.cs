@@ -22,18 +22,18 @@ public class ExecuteOptions
     /// The inline box-script code to execute
     /// </summary>
     [Value(0, HelpText = "The inline box-script code to execute", Required = false)]
-    public string? Script { get; set; }
+    public IEnumerable<string> Script { get; set; } = [];
 
     /// <summary>
     /// The configuration file to use
     /// </summary>
-    [Option('c', "config-file", HelpText = "The configuration file to use - Supports XML, JSON, and INI files")]
+    [Option('c', "config-file", HelpText = "The configuration file to use - Supports XML, JSON, and INI files (relative to the script or working-directory)")]
     public string? ConfigFile { get; set; }
 
     /// <summary>
     /// The log file to write the execution logs to
     /// </summary>
-    [Option('l', "log-file", HelpText = "The log file to write the execution logs to")]
+    [Option('l', "log-file", HelpText = "The log file to write the execution logs to (relative to the script or working-directory)")]
     public string? LogFile { get; set; }
 
     /// <summary>
@@ -112,9 +112,18 @@ internal class ExecuteVerb(
         _logger.LogInformation("Set working directory to: {dir}", full);
     }
 
+    public static string? GetInline(ExecuteOptions options)
+    {
+        if (options.Script is null || !options.Script.Any())
+            return null;
+
+        return string.Join(" ", options.Script)?.ForceNull();
+    }
+
     public override async Task<bool> Execute(ExecuteOptions options, CancellationToken token)
     {
-        var hasInline = !string.IsNullOrWhiteSpace(options.Script);
+        var inlineScript = GetInline(options);
+        var hasInline = !string.IsNullOrWhiteSpace(inlineScript);
         var hasFile = !string.IsNullOrWhiteSpace(options.File);
         if (!hasInline && !hasFile)
         {
@@ -135,7 +144,7 @@ internal class ExecuteVerb(
         }
 
         var script = hasInline
-            ? options.Script!
+            ? inlineScript!
             : await File.ReadAllTextAsync(options.File!, token);
         var settings = GetSettings(options, token);
         UpdateWorkingDirectory(options, hasFile);

@@ -1,6 +1,4 @@
-﻿using Jint;
-using Jint.Native;
-using Serilog;
+﻿using Serilog;
 
 namespace BoxScript.Services;
 

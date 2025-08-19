@@ -1,6 +1,4 @@
-﻿using Jint;
-using Jint.Native;
-using JsonSerializer = Jint.Native.Json.JsonSerializer;
+﻿using JsonSerializer = Jint.Native.Json.JsonSerializer;
 using JsonDeserializer = Jint.Native.Json.JsonParser;
 
 namespace BoxScript.Modules;
@@ -16,8 +14,9 @@ public interface IJsonModule : IScriptModule
     /// Serializes the given value to a JSON string.
     /// </summary>
     /// <param name="value">The value</param>
+    /// <param name="spacer">The number of spaces to use for pretty printing</param>
     /// <returns>The JSON string</returns>
-    string Serialize(JsValue value);
+    string Serialize(JsValue value, int? spacer = null);
 
     /// <summary>
     /// Deserializes the given JSON string to a JsValue object.
@@ -34,10 +33,10 @@ public class JsonModule(
 {
     /// <inheritdoc />
     [ModuleExport]
-    public string Serialize([ModuleExport(type: typeof(object))] JsValue value)
+    public string Serialize([ModuleExport(type: typeof(object))] JsValue value, int? spacer = null)
     {
         var ser = new JsonSerializer(_engine);
-        return ser.Serialize(value).AsString();
+        return ser.Serialize(value, null!, spacer!).AsString();
     }
 
     /// <inheritdoc />

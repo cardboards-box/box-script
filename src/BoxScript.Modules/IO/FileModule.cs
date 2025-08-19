@@ -1,7 +1,8 @@
-﻿namespace BoxScript.Modules.IO;
+﻿using System.IO.Compression;
+
+namespace BoxScript.Modules.IO;
 
 using Core;
-using System.IO.Compression;
 
 /// <summary>
 /// A module that provides file system related functionalities to box-scripts

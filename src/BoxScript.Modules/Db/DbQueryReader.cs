@@ -1,5 +1,4 @@
 ﻿using Dapper;
-using Jint.Native;
 
 namespace BoxScript.Modules.Db;
 

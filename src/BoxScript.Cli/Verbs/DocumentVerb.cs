@@ -1,7 +1,6 @@
 ﻿namespace BoxScript.Cli.Verbs;
 
 using Documentation;
-using Jint;
 using Modules;
 using Services;
 

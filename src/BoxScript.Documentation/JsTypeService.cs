@@ -1,7 +1,6 @@
-﻿using BoxScript.Core;
-using System.Diagnostics.CodeAnalysis;
+﻿namespace BoxScript.Documentation;
 
-namespace BoxScript.Documentation;
+using Core;
 
 /// <summary>
 /// A service that converts C# types to JavaScript types

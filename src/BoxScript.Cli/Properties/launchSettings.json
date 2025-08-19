@@ -2,7 +2,7 @@
   "profiles": {
     "BoxScript.Cli": {
       "commandName": "Project",
-      "commandLineArgs": "document"
+      "commandLineArgs": "import { logger } from 'modules'; logger.Info('Hello world!');"
     }
   }
 }

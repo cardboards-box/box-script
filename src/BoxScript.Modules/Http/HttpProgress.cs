@@ -1,8 +1,8 @@
-﻿using BoxScript.Core;
-using System.Diagnostics;
-using System.Net.Http.Handlers;
+﻿using System.Net.Http.Handlers;
 
 namespace BoxScript.Modules.Http;
+
+using Core;
 
 /// <summary>
 /// A class that holds the progress of an HTTP request.

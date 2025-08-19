@@ -1,6 +1,6 @@
 ﻿// This file is auto-generated from the loaded modules
 // You should avoid modifying this file directly
-// Generated: 2025-08-19 05:41 UTC
+// Generated: 2025-08-19 06:32 UTC
 
 /** Specifies values that indicate whether a compression operation emphasizes speed or compression size. */
 declare class CompressionLevel {
@@ -804,9 +804,10 @@ declare module "modules" {
 		/**
 		 * Serializes the given value to a JSON string.
 		 * @param {any} value The value
+		 * @param {number} [spacer] The number of spaces to use for pretty printing
 		 * @returns {string} The JSON string
 		 */
-		Serialize(value: any): string;
+		Serialize(value: any, spacer?: number): string;
 		/**
 		 * Deserializes the given JSON string to a JsValue object.
 		 * @param {string} value The value

@@ -1,6 +1,4 @@
-﻿using System.Dynamic;
-
-namespace BoxScript.Core;
+﻿namespace BoxScript.Core;
 
 /// <summary>
 /// A dynamic proxy for script objects that allows access to properties and methods

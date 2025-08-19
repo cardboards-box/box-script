@@ -1,8 +1,6 @@
-﻿using BoxScript.Core;
-using Jint;
-using Jint.Native;
+﻿namespace BoxScript.Modules.Http;
 
-namespace BoxScript.Modules.Http;
+using Core;
 
 internal delegate void HttpVoidDelegate();
 

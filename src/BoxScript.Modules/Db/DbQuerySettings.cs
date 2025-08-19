@@ -1,10 +1,8 @@
 ﻿using Dapper;
-using Jint.Native;
 
 namespace BoxScript.Modules.Db;
 
 using Core;
-using Jint;
 
 /// <summary>
 /// The settings for a query

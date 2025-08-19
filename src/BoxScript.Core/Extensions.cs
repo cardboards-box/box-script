@@ -1,8 +1,4 @@
-﻿using Jint;
-using Jint.Native;
-using System.Diagnostics.CodeAnalysis;
-
-namespace BoxScript.Core;
+﻿namespace BoxScript.Core;
 
 /// <summary>
 /// A collection of useful extension methods

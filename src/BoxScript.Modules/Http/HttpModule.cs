@@ -1,5 +1,4 @@
-﻿using Jint.Native;
-using System.Net.Http.Handlers;
+﻿using System.Net.Http.Handlers;
 
 namespace BoxScript.Modules.Http;
 
