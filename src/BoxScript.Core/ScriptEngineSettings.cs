@@ -206,7 +206,7 @@ internal class ScriptEngineSettings : IScriptEngineSettings
             throw new FileNotFoundException("Configuration file not found.", path);
 
         return AddConfig(c => c
-            .AddFile(path, optional: false, reloadOnChange: true));
+            .AddFile(path, optional: true, reloadOnChange: true));
     }
 
     public IScriptEngineSettings AddModule<T>() where T : class, IScriptModule

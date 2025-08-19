@@ -1,11 +1,16 @@
-﻿import { config, logger, db, file } from 'modules';
+﻿import { config, logger, db, file, json } from 'modules';
 
 //Get the database connection string from the config
-const connectionString = config.Get('Database:ConnectionString') || 'Data Source=database.db;';
+let connectionString = config.Get('Database:ConnectionString');
+if (!connectionString) {
+	connectionString = 'Data Source=database.db;';
+    logger.Warning('No connection string found in config, using default: {connectionString}', connectionString);
+}
 
 //Delete the database if it already exists
-if (file.Exists('database.db'))
-	file.Delete('database.db');
+const dbPath = connectionString.match(/Data Source=([^;]+)/)[1];
+if (file.Exists(dbPath))
+	file.Delete(dbPath);
 
 const con = await db.SQLite()
     .WithConnection(connectionString)
@@ -45,18 +50,18 @@ for (const user of inserts) {
 
 const users = await con.Query("SELECT * FROM users");
 for (const user of users) {
-	logger.Info('User: {user}', JSON.stringify(user, null, 2));
+	logger.Info('User: {user}', json.Serialize(user, 2));
 }
 
 const reader = await con.Multiple(`
 SELECT * FROM users;
 SELECT user_name as UserName, first_name as FirstName, last_name as LastName FROM users;`);
 
-const basic = await reader.Next();
-logger.Info('Basic User Data: {data}', JSON.stringify(basic, null, 2));
+const basic = await reader.Read();
+logger.Info('Basic User Data: {data}', json.Serialize(basic, 2));
 
-const modified = await reader.Next();
-logger.Info('Modified User Data: {data}', JSON.stringify(modified, null, 2));
+const modified = await reader.Read();
+logger.Info('Modified User Data: {data}', json.Serialize(modified, 2));
 
 reader.Dispose();
 

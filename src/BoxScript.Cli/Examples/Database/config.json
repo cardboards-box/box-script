@@ -1,5 +1,5 @@
 ﻿{
   "Database": {
-    "ConnectionString": "Data Source=database.db;"
+    "ConnectionString": "Data Source=test.db;"
   }
 }

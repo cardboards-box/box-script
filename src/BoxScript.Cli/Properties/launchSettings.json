@@ -2,7 +2,7 @@
   "profiles": {
     "BoxScript.Cli": {
       "commandName": "Project",
-      "commandLineArgs": "import { logger } from 'modules'; logger.Info('Hello world!');"
+      "commandLineArgs": "execute -f Examples/Database/script.js -c config.json -l logs/logs.txt"
     }
   }
 }

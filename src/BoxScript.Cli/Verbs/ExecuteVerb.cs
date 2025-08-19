@@ -65,25 +65,42 @@ internal class ExecuteVerb(
     ILogger<ExecuteVerb> logger,
     IScriptEngineService _engine) : BooleanVerb<ExecuteOptions>(logger)
 {
+    public void AddConfigFile(IScriptEngineSettings settings, ExecuteOptions options)
+    {
+        if (string.IsNullOrEmpty(options.ConfigFile)) return;
+        string[] files =
+        [
+            Path.GetFullPath(options.ConfigFile, Directory.GetCurrentDirectory()),
+            options.ConfigFile,
+        ];
+        foreach (var file in files)
+        {
+            if (!File.Exists(file)) continue;
+
+            settings.AddConfigFile(file);
+            _logger.LogInformation("Added configuration file: {file}", file);
+            return;
+        }
+        _logger.LogWarning("Configuration file '{configFile}' not found in any of the expected locations.", options.ConfigFile);
+    }
+
+    public void AddLogFile(IScriptEngineSettings settings, ExecuteOptions options)
+    {
+        if (string.IsNullOrEmpty(options.LogFile)) return;
+
+        var path = Path.GetFullPath(options.LogFile, Directory.GetCurrentDirectory());
+        settings.AddLogger(c => c.WriteTo.File(path, rollingInterval: RollingInterval.Day));
+        _logger.LogInformation("Added log file: {logFile}", path);
+    }
+
     public IScriptEngineSettings GetSettings(ExecuteOptions options, CancellationToken token)
     {
-        var settings = _engine.SettingsInstance()
+        var settings = _engine
+            .SettingsInstance()
             .SetCancelToken(token);
 
-        if (!string.IsNullOrEmpty(options.ConfigFile))
-        {
-            if (!File.Exists(options.ConfigFile))
-            {
-                _logger.LogError("The configuration file '{ConfigFile}' does not exist.", options.ConfigFile);
-                throw new FileNotFoundException("Configuration file not found", options.ConfigFile);
-            }
-
-            settings.AddConfigFile(options.ConfigFile);
-        }
-
-        if (!string.IsNullOrEmpty(options.LogFile))
-            settings.AddLogger(c => c
-                .WriteTo.File(options.LogFile, rollingInterval: RollingInterval.Day));
+        AddConfigFile(settings, options);
+        AddLogFile(settings, options);
 
         if (options.TimeoutSeconds is not null)
             settings.SetExecutionTimeout(options.TimeoutSeconds.Value);
@@ -120,6 +137,17 @@ internal class ExecuteVerb(
         return string.Join(" ", options.Script)?.ForceNull();
     }
 
+    public string GetDisplayString(string script, string? path)
+    {
+        if (!string.IsNullOrWhiteSpace(path))
+            return path;
+
+        var portion = script.SafeSubString(400);
+        if (script.Length > 400)
+            portion += "...";
+        return $"Inline script: {portion}";
+    }
+
     public override async Task<bool> Execute(ExecuteOptions options, CancellationToken token)
     {
         var inlineScript = GetInline(options);
@@ -146,9 +174,10 @@ internal class ExecuteVerb(
         var script = hasInline
             ? inlineScript!
             : await File.ReadAllTextAsync(options.File!, token);
-        var settings = GetSettings(options, token);
         UpdateWorkingDirectory(options, hasFile);
-        _logger.LogInformation("Starting to execute script >> {script}", script.SafeSubString(400));
+        var settings = GetSettings(options, token);
+        _logger.LogInformation("Starting to execute script >> {script}", 
+            GetDisplayString(script, hasFile ? options.File : null));
         var result = await _engine.Execute(script, settings);
         if (result is null || result.IsUndefined() || result.IsNull())
         {
